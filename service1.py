@@ -48,8 +48,13 @@ def call():
 
 @app.route("/svc")
 def call2():
-    
-    return requests.get('http://svc2').content
+    with tracer.start_span("call-1") as current_span: 
+        req1 = requests.get('http://svc1').content
+
+    with tracer.start_as_current_span("call-2") as current_span:
+        req2 = requests.get('http://svc2').content
+        
+    return req1+req2
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
