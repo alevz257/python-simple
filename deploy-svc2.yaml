@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: svc2
+  labels:
+    app: svc2
+spec:
+  containers:
+  - name: test
+    image: asia-southeast2-docker.pkg.dev/alevz-demo-1/containers/svc2:latest
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc2
+spec:
+  type: LoadBalancer
+  selector:
+    app: svc2
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
